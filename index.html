@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Rika's Betting Salon</title>
+    <link rel="stylesheet"href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
+    
+  
+  </head>
+  
+  <body>
+      <div class="container">
+      <h1>Test for Rika betting</h1>
+      <form onsubmit="testfunction()">
+      <div class="form-group">
+      <label for="BetAmount">Bet Amount</label>
+      <input type="number" class="form-control" id="BetAmount" placeholder="1 ETH">
+      </div> 
+      <div class="form-group">
+      <label for="TeamSelection">Team Selection</label>
+      <select class="-control" id="TeamSelection">
+         <option>team 1</option>
+         <option>team 2 </option>
+      </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      </div>
+      <script>
+        function testfunction(){
+          alert(document.getElementById("BetAmount"));
+        }
+        </script>
+        
+ </body>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <!-- !-- Include all compiled plugins (below), or include individual files as needed --> -->
+ <!-- <script src="js/bootstrap.min.js"></script> -->
+ <script src="./node_modules/web3/dist/web3.min.js"></script>
+ <!-- <script src="js/truffle-contract.js"></script> -->
+ <script src="./src/app2.js"></script>
+</html>
