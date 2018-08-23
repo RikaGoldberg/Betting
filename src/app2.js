@@ -21,17 +21,38 @@ App = {
   
   initContract: function() {
     web3.eth.defaultAccount = web3.eth.accounts[0];
-    console.log(web3.eth.defaultAccount)
-    .getJSON('./build/contracts/Betting.json', function(data){
-      var BettingArtifact = data.abi[0];
-      App.contracts.BettingContract = web3.eth.contract(BettingArtifact);
-      App.contracts.BettingContract.setProvider(app.web3Provider);
-      console.log()
-     // return App.markAdopted()
+    $.getJSON('./build/contracts/Betting.json', function(data){
+      var BettingArtifact = data
+      App.contracts.Betting = TruffleContract(BettingArtifact);
+      App.contracts.Betting.setProvider(App.web3Provider);
+      return App.checkPlayerExists("jhkjk");
+
+    // return App.markAdopted()
 
     })
+  },
+
+  checkPlayerExists: function(address) {
+    var bettingInstance;
+    console.log(address);
+    
+    App.contracts.Betting.deployed().then(function(instance){
+      bettingInstance = instance;
+      console.log(instance);
+    
+      return bettingInstance.checkPlayerExists.call();
+    }).then(function(results){
+      console.log(result);
+      
+    }).catch(function(err) {
+      console.log(err.message);
+    });
   }
-};
+}
+
+
+
+
 
 $(function() {
     $(window).load(function() {
