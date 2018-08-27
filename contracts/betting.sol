@@ -4,36 +4,47 @@ contract Betting {
    address public owner;
    uint256 public minimumBet;
    uint256 public totalBetsOne;
-    uint256 public totalBetsTwo;
-address[] public players;
+   uint256 public totalBetsTwo;
+   address[] public players;
+
+
 struct Player {
       uint256 amountBet;
       uint16 teamSelected;
     }
-// The address of the player and => the user info
-   mapping(address => Player) public playerInfo;
-function() public payable {}
-function Betting() public payable {
+
+// The address of the player and => the user info mapping
+
+ mapping (address => Player) public playerInfo;
+
+
+// function() public payable {}
+
+constructor() public payable {
       owner = msg.sender;
       minimumBet = 100000000000000;
     }
-function kill() public {
+    
+    function kill() public {
       if(msg.sender == owner) selfdestruct(owner);
     }
-function checkPlayerExists(address player) public constant returns(bool){
-      for(uint256 i = 0; i < players.length; i++){
-         if(players[i] == player) return true;
-      }
-      return false;
-    }
-   
-   
-    function bet(uint8 _teamSelected) public payable {
-      //The first require is used to check if the player already exist
-      require(!checkPlayerExists(msg.sender));
-      //The second one is used to see if the value sended by the player is 
-      //Higher than the minimum value
-      require(msg.value >= minimumBet);
+    
+ //I don't think this function is necessary for basic functionality//
+//  function checkPlayerExists(address _player) public constant returns(bool){
+//       for(uint256 i = 0; i < players.length; i++){
+//          if(players[i] == player) return true;
+//       }
+      
+//       players[_player];
+//       return false;
+//     }
+    
+  function bet(uint8 _teamSelected) public payable returns(uint256) {
+  
+  //should remove if this function gets deleted//
+    // require(!checkPlayerExists(msg.sender));
+      //I think this is not needed
+    require(msg.value >= minimumBet);
       
       //We set the player informations : amount of the bet and selected team
       playerInfo[msg.sender].amountBet = msg.value;
@@ -42,16 +53,21 @@ function checkPlayerExists(address player) public constant returns(bool){
       //then we add the address of the player to the players array
       players.push(msg.sender);
       
+      //I think the loop may be causing the contract to revert//
       //at the end, we increment the stakes of the team selected with the player bet
       if ( _teamSelected == 1){
           totalBetsOne += msg.value;
+          return totalBetsOne;
       }
       else{
           totalBetsTwo += msg.value;
+          return totalBetsTwo;
+
+    
       }
     }
     // Generates a number between 1 and 10 that will be the winner
-    function distributePrizes(uint16 teamWinner) public {
+    function distributePrizes(uint16 teamWinner) public returns(address[1000]) {
       address[1000] memory winners; 
       //We have to create a temporary in memory array with fixed size
       //Let's choose 1000
@@ -70,6 +86,7 @@ function checkPlayerExists(address player) public constant returns(bool){
             count++;
          }
       }
+     
       
       //We define which bet sum is the Loser one and which one is the winner
       if ( teamWinner == 1){
@@ -85,11 +102,13 @@ function checkPlayerExists(address player) public constant returns(bool){
       //We loop through the array of winners, to give ethers to the winners
       for(uint256 j = 0; j < count; j++){
           // Check that the address in this fixed array is not empty
-         if(winners[j] != address(0)) 
+         if(winners[j] != address(0)) {
+         
             address add = winners[j];
             uint256 bet = playerInfo[add].amountBet;
             //Transfer the money to the user 
             winners[j].transfer(    (bet*(10000+(LoserBet*10000/WinnerBet)))/10000 );
+         }
       }
       delete playerInfo[playerAddress]; // Delete all the players
       players.length = 0; // Delete all the players array
