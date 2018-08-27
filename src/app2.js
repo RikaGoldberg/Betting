@@ -25,115 +25,113 @@ App = {
       var BettingArtifact = data
       App.contracts.Betting = TruffleContract(BettingArtifact);
       App.contracts.Betting.setProvider(App.web3Provider);
-      return App.checkPlayerExists("jhkjk");
+      // return App.checkPlayerExists();
+      // App.checkPlayerExists("Player Checked");
+      // App.distributePrizes("Prizes Distributed")
 
-    // return App.markAdopted()
+      // return App.bindEvents();
 
     })
   },
+ bindEvents: function() {
+    $(document).on('click', '.btn-submit', App.testfunction);
+     // $(document).on('click', '#distributePrizes', App.testfunction);
+    // $(document).on('click', '.btn-distributeprizes', alert("hello"));
+ 
+  // bindEvents: function() {
+  //   $(document).on('click', '#betForm', App.testfunction);
+  //   $(document).on('click', '#distributePrizes', alert("hello"));
+      
+  },
+  
+  Bet: function(wager) {
+    var betAmount; 
+    console.log(wager);
 
-  checkPlayerExists: function(address) {
-    var bettingInstance;
-    console.log(address);
-    
     App.contracts.Betting.deployed().then(function(instance){
       bettingInstance = instance;
       console.log(instance);
-    
-      return bettingInstance.checkPlayerExists.call();
-    }).then(function(results){
-      console.log(result);
+         return bettingInstance.bet(wager, {from:web3.eth.coinbase,value:9999});
       
     }).catch(function(err) {
       console.log(err.message);
     });
+  },
+
+  distributePrizes: function(prize) {
+    var bettingInstance
+    console.log(prize)
+
+    App.contracts.Betting.deployed().then(function(instance){
+      bettingInstance = instance;
+      console.log(instance);
+         return bettingInstance.bet(prize, {from:web3.eth.coinbase,value:9999});
+        //  return alert("prizes distributed");
+         
+    }).then(function(results){
+      console.log(results);
+
+      
+    }).catch(function(err) {
+      console.log(err.message);
+    });
+  },
+
+      
+   checkPlayerExists: function(address) {
+    var bettingInstance;
+    App.contracts.Betting.deployed().then(function(instance){
+        bettingInstance = instance;
+        return bettingInstance.getBets
+        console.log(address);
+        
+    })
+  },
+    // console.log(address);
+        
+    // return App.contracts.Betting.deployed().then(function(instance){
+    //   bettingInstance = instance;
+          
+  //     return bettingInstance.checkPlayerExists.call("0x009999");
+
+  //   }).then(function(results){
+  //     console.log(results);
+
+      
+  //   }).catch(function(err) {
+  //     console.log(err.message);
+  //   });
+  // },
+
+  testfunction: function(event){
+    // event.preventDefault();
+    
+      
+     var betAmount = $("#BetAmount").val();
+     var teamSelection = $("#TeamSelection").val();
+     console.log(teamSelection);
+     console.log(betAmount);
+
+     alert("Team 1 Won - Woot! You're interacting with Web3 now, congratulations! PS, I am not a developer so please pardon the very basic UI!") 
+  
+     return false; 
+  
+   
+   
+
   }
-}
-
-
-
+ }
 
 
 $(function() {
     $(window).load(function() {
-      App.init();
+      App.init();     
     });
 });
 
 
 
 
-    // initWeb3: function() {
-    // if (typeof web3 !== 'undefined') {
-    //   web3 = new Web3(web3.currentProvider);
-    // } else {
-    //   // set the provider you want from Web3.providers
-    //   web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-    // }}
 
-
-
-    // // Load pets.
-    // .getJSON('../pets.json', function(data) {
-    //   var BetAmount = $('#petsRow');
-    //   var petTemplate = $('#petTemplate');
-
-//     //   for (i = 0; i < data.length; i ++) {
-//     //     petTemplate.find('.panel-title').text(data[i].name);
-//     //     petTemplate.find('img').attr('src', data[i].picture);
-//     //     petTemplate.find('.pet-breed').text(data[i].breed);
-//     //     petTemplate.find('.pet-age').text(data[i].age);
-//     //     petTemplate.find('.pet-location').text(data[i].location);
-//     //     petTemplate.find('.btn-adopt').attr('data-id', data[i].id);
-
-//     //     petsRow.append(petTemplate.html());
-//     //   }
-//     // });
-
-//     var BetAmount = $('#BetAmount');
-//     var TeamSelection = $('#TeamSelection');
-
-//     return App.initWeb3();
-//   },
-
-//   initWeb3: function() {
-//     if (typeof web3 !== 'undefined') {
-//       web3 = new Web3(web3.currentProvider);
-//     } else {
-//       // set the provider you want from Web3.providers
-//       web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-//     }
-
-//     return App.initContract();
-//   },
-
-
-
-      
-
-//     return App.bindEvents();
-//   },
-
-//   bindEvents: function() {
-//     $(document).on('click', '.btn-adopt', App.handleAdopt);
-//   },
-
-//   testfunction: function(adopters, account) {
-//     /*
-//      * Replace me...
-//      */
-//   },
-
-//   handleAdopt: function(event) {
-//     event.preventDefault();
-
-//     var petId = parseInt($(event.target).data('id'));
-
-//     /*
-//      * Replace me...
-//      */
-//   }
-
-// };
 
 
